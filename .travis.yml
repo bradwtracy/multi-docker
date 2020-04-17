@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+  
+before_install:
+  - docker build -t bradwtracy/react-test -f ./client./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true bradwtracy/react-test npm test
+  
+after_success:
+  - docker build -t bradwtracy/multi-client ./client
+  - docker build -t bradwtracy/multi-nginx ./nginx
+  - docker build -t bradwtracy/multi-server ./server
+  - docker build -t bradwtracy/multi-worker ./worker
+  # Log into Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+ 
+  # Take those images and push them to docker hub
+  - docker push bradwtracy/multi-client
+  - docker push bradwtracy/multi-nginx
+  - docker push bradwtracy/multi-server
+  - docekr push bradwtracy/multi-worker
