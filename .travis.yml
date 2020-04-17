@@ -20,4 +20,4 @@ after_success:
   - docker push bradwtracy/multi-client
   - docker push bradwtracy/multi-nginx
   - docker push bradwtracy/multi-server
-  - docekr push bradwtracy/multi-worker
+  - docker push bradwtracy/multi-worker
